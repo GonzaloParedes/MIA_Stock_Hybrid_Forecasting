@@ -1,4 +1,4 @@
-# expanding_train_true_batch.py
+
 import sys, os, time
 import random
 import numpy as np
@@ -15,7 +15,7 @@ from torch.utils.data import Subset
 
 from data_utils import TrainConfig
 
-from true_batch_components import BatchableHybridDataset, TrueBatchHybridModel
+from VarianteB.batch_components import BatchableHybridDataset, TrueBatchHybridModel
 
 # ==============================================================================
 # FUNCIÓN SET_SEED (Integrada aquí para evitar dependencias externas)

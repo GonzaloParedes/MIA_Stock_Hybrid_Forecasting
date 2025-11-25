@@ -3,9 +3,7 @@ import os
 import subprocess
 import time
 
-# ==============================================================================
 # CONFIGURACIÓN DE RUTAS
-# ==============================================================================
 # Ajusta estos nombres si tus carpetas o archivos se llaman diferente
 
 CONFIG = {
@@ -21,9 +19,7 @@ CONFIG = {
     }
 }
 
-# ==============================================================================
 # LÓGICA DE EJECUCIÓN
-# ==============================================================================
 
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -58,7 +54,7 @@ def run_variant(option):
     except subprocess.CalledProcessError as e:
         print(f"\nEl script falló con código de error: {e.returncode}")
     except KeyboardInterrupt:
-        print("\n\n🛑 Ejecución interrumpida por el usuario.")
+        print("\n\nEjecución interrumpida por el usuario.")
     except Exception as e:
         print(f"\nError inesperado: {e}")
 

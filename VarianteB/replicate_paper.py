@@ -1,4 +1,3 @@
-# replicate_paper.py
 import matplotlib
 matplotlib.use('Agg') # CRÍTICO: Al inicio
 import matplotlib.pyplot as plt
@@ -13,7 +12,7 @@ import argparse
 import traceback
 
 # Importamos la NUEVA función de entrenamiento
-from expanding_train_true_batch import expanding_train_true_batch
+from VarianteB.expanding_train import expanding_train_true_batch
 
 
 def inspect_dataset(df):

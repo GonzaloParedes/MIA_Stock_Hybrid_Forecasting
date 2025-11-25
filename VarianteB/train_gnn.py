@@ -1,4 +1,3 @@
-# train_gnn_fixed.py
 import numpy as np
 import pandas as pd
 import torch

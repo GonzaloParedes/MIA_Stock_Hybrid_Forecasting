@@ -1,11 +1,10 @@
-# data_utils.py
 import pandas as pd
 import numpy as np
 import torch
 from torch.utils.data import Dataset
 from dataclasses import dataclass
 from typing import List
-from train_gnn_fixed import build_graph_and_features
+from VarianteB.train_gnn import build_graph_and_features
 
 @dataclass
 class TrainConfig:

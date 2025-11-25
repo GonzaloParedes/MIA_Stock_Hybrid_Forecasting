@@ -1,0 +1,7 @@
+ticker_downloads:
+
+  tickers: ["GGAL", "YPF", "MSFT", "CMCSA", "COST", "AAPL", "QCOM", "ADBE", "SBUX", "INTU", "AMD", "INTC", "NVDA"]
+  start : "2005-01-01"               # rango temporal
+  end   : "2025-11-24"               
+  normalize_to_100 : False           # True para normalizar todas a 100 (facilita comparación)
+  price_field : ["Close"]            # campo de precio a utilizar (Open, High, Low, Close, Adj Close)

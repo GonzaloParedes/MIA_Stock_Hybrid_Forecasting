@@ -1,0 +1,7 @@
+yfinance
+torch
+matplotlib
+pyyaml
+tqdm
+optuna
+mlxtend

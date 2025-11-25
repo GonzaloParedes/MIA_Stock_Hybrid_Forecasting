@@ -28,11 +28,11 @@ src/
 │   └── test6.ipynb      # Varios tests puntuales de ideas/escenarios
 ├── utils/
 │   ├── gnn.py           # Construcción del grafo y embeddings GNN (Pearson + lift)
-│   ├── LSTM.py          # Clase LSTMRegressor y funciones de entrenamiento/walk-forward
-│   ├── metrics.py       # Cálculo de MSE, hit rate, PnL diario, tablas comparativas, etc.
-│   ├── plots.py         # Funciones para graficar resultados de forecasting y curvas de capital
-│   └── utils.py         # Helpers generales: descarga de tickers, trading days, utils varios
-├── config.yaml          # Configuración: tickers, rango de fechas, parámetros por defecto, etc.
+│   ├── LSTM.py          # Clase LSTMRegressor
+│   ├── metrics.py       # Cálculo de MSE, hit rate, PnL diario, y más.
+│   ├── plots.py         # Funciones para graficar resultados de forecasting
+│   └── utils.py         # descarga de tickers, trading days, utils varios, y más.
+├── config.yaml          # Configuración: tickers, rango de fechas, etc.
 └── main.ipynb           # Notebook principal para correr predicciones
 
 ```

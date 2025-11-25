@@ -101,7 +101,7 @@ def expanding_train_true_batch(
             print("Datos insuficientes.")
             break
 
-        # --- GENERACIÓN DEL DATASET ---
+        # GENERACIÓN DEL DATASET
         print("   Generando Dataset y Grafos (Cacheando)... ", end="")
         t0 = time.time()
 
@@ -129,7 +129,7 @@ def expanding_train_true_batch(
         train_loader = DataLoader(ds_train, batch_size=cfg.batch_size, shuffle=True)
         val_loader = DataLoader(ds_val, batch_size=cfg.batch_size, shuffle=False)
 
-        # --- INICIALIZACIÓN DEL MODELO ---
+        # INICIALIZACIÓN DEL MODELO 
         # Se reinicializa el modelo en cada paso para evitar sobreajuste a la historia lejana
         model = TrueBatchHybridModel(
             lstm_hidden=cfg.lstm_hidden, lstm_layers=cfg.lstm_layers,
@@ -142,7 +142,7 @@ def expanding_train_true_batch(
         optimizer = torch.optim.Adam(model.parameters(), lr=cfg.lr)
         criterion = nn.MSELoss()
 
-        # --- ENTRENAMIENTO (OPTIMIZACIÓN) ---
+        # ENTRENAMIENTO (AJUSTE) 
         best_val_loss = float('inf')
         patience_counter = 0
         best_model_state = None
@@ -204,7 +204,7 @@ def expanding_train_true_batch(
         if best_model_state is not None:
             model.load_state_dict(best_model_state)
 
-        # --- PREDICCIÓN ---
+        # PREDICCIÓN 
 
         # Identificar el siguiente día hábil fuera de la muestra de entrenamiento
         # Buscamos en el índice de fechas cuáles son posteriores a la fecha de corte actual.

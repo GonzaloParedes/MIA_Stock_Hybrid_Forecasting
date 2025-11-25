@@ -4,9 +4,7 @@ import pandas as pd
 import torch
 from typing import List
 
-# ==============================================================================
-# 1. UTILIDADES INTERNAS (SOLO PEARSON)
-# ==============================================================================
+#UTILIDADES INTERNAS
 
 def dense_adj_to_edge_index(adj_matrix):
     if not isinstance(adj_matrix, torch.Tensor):
@@ -44,27 +42,6 @@ def adj_from_pearson(prices_window, pearson_min_abs_corr=0.5):
     
     return adj
 
-def gnn_feature_from_close(prices, end_day, W, tickers):
-    """
-    Normalización local Z-score (StandardScaler) sobre la ventana W.
-    NOTA: Para los features del nodo (x), SÍ seguimos usando la ventana W 
-    reciente para capturar el estado actual del mercado, aunque el grafo
-    se construya con toda la historia.
-    """
-    pos = prices.index.get_loc(end_day)
-    start_pos = max(0, pos - (W - 1))
-    window = prices.iloc[start_pos: pos + 1][tickers].values 
-    
-    x_mean = np.mean(window, axis=0, keepdims=True)
-    x_std = np.std(window, axis=0, keepdims=True) + 1e-8
-    x_norm = (window[-1, :] - x_mean) / x_std 
-    
-    return torch.tensor(x_norm.T, dtype=torch.float32) # (N, 1)
-
-# ==============================================================================
-# 2. FUNCIÓN PRINCIPAL CORREGIDA (EXPANDING CORRELATION)
-# ==============================================================================
-
 def build_graph_and_features(
     prices: pd.DataFrame,
     tickers: List[str],
@@ -94,12 +71,12 @@ def build_graph_and_features(
     A = maybe_add_self_loops(A, add_self_loops=True)
     edge_index, edge_weight = dense_adj_to_edge_index(A)
     
-    # 2. FEATURES (SEÑAL) -> GLOBAL MIN-MAX SCALING
-    # Obtenemos el precio de cierre de "hoy" (end_day)
+    # FEATURES -> GLOBAL MIN-MAX SCALING
+    # Obtenemos el precio de cierre de hoy (end_day)
     current_prices = P.loc[end_day, tickers].values.astype(np.float32)
     
     # Normalizamos usando los Min/Max globales del periodo de entrenamiento.
-    # Esto le dice a la red: "¿Dónde está el precio hoy respecto a los últimos 2 años?"
+    
     denom = price_max - price_min
     denom = np.where(np.abs(denom) < 1e-8, 1.0, denom)
     
@@ -108,7 +85,7 @@ def build_graph_and_features(
     # Convertimos a tensor (N_nodos, 1)
     X = torch.tensor(x_norm, dtype=torch.float32)[:, None].to(device)
 
-    # 3. TARGET (Etiqueta para el MSE)
+    # TARGET (Etiqueta para el MSE)
     close_next = P.loc[next_day, tickers].values.astype(np.float32)
     close_next_norm = (close_next - price_min) / denom
     y = torch.tensor(close_next_norm, dtype=torch.float32)[:, None].to(device)

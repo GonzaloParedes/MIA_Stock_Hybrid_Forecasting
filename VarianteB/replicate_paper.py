@@ -194,7 +194,7 @@ def main():
             traceback.print_exc() # Muestra detalle del error
             store_results[target] = {'mse': None}
 
-    # --- Resumen Final ---
+    # Resumen Final 
     print("\n=== TABLA DE RESULTADOS ===")
     
     valid_mses_norm = []

@@ -4,30 +4,25 @@ import pandas as pd
 import numpy as np
 
 def generar_heatmap_comparativo():
-    # ---------------------------------------------------------
-    # 1. PREPARACIÓN DE DATOS
-    # ---------------------------------------------------------
+    # PREPARACIÓN DE DATOS
     
     # Lista de Tickers ordenados alfabéticamente para consistencia
     tickers = sorted(['AAPL', 'ADBE', 'AMD', 'CMCSA', 'COST', 'INTC', 'INTU', 'MSFT', 'QCOM', 'SBUX'])
     
-    # DATOS 1: LSTM (Línea Base)
-    # NOTA: He copiado estos valores visualmente de la IMAGEN que subiste (fila superior).
-    # Si tienes tus propios resultados del benchmark LSTM, reemplaza estos valores.
+    #  LSTM (Línea Base)
     lstm_data = {
         'AAPL': 0.0017, 'MSFT': 0.0015, 'CMCSA': 0.0048, 'COST': 0.0030, 
         'QCOM': 0.0011, 'ADBE': 0.0013, 'SBUX': 0.0031, 'INTU': 0.0015, 
         'AMD': 0.0006, 'INTC': 0.0013
     }
 
-    # DATOS 2: TU MODELO (LSTM + GNN)
-    # Estos son los datos copiados de tu tabla de texto provista.
+    # MODELO
     my_model_data = {
         'AAPL':  0.01099,
         'ADBE':  0.00286,
         'AMD':   0.00155,
         'CMCSA': 0.00962,
-        'COST':  0.04106, # Este valor es muy alto, dominará la escala de color
+        'COST':  0.04106, 
         'INTC':  0.00518,
         'INTU':  0.00182,
         'MSFT':  0.00373,
@@ -48,9 +43,7 @@ def generar_heatmap_comparativo():
                       columns=tickers, 
                       index=["LSTM (Baseline)", "Tu Modelo (LSTM+GNN)"])
 
-    # ---------------------------------------------------------
-    # 2. GENERACIÓN DEL GRÁFICO
-    # ---------------------------------------------------------
+    # GENERACIÓN DEL GRÁFICO
     plt.figure(figsize=(14, 4)) # Formato ancho como el de la imagen
     
     # Usamos coolwarm (Azul=Bajo Error, Rojo=Alto Error)
@@ -79,7 +72,7 @@ def generar_heatmap_comparativo():
     # Guardar y Mostrar
     filename = "comparacion_heatmap_final.png"
     plt.savefig(filename, dpi=300)
-    print(f"✅ Gráfico guardado como: {filename}")
+    print(f"Gráfico guardado como: {filename}")
     plt.show()
 
 if __name__ == "__main__":

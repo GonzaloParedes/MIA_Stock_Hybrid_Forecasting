@@ -1,13 +1,10 @@
-# true_batch_components.py
 import torch
 import torch.nn as nn
 from torch_geometric.data import Data
 from torch_geometric.nn import GCNConv
 from data_utils import HybridEndToEndDataset as BaseDataset
 
-# ==============================================================================
-# 1. DATASET WRAPPER (ADAPTADOR PARA PYTORCH GEOMETRIC)
-# ==============================================================================
+# DATASET WRAPPER 
 class BatchableHybridDataset(BaseDataset):
     """
     Wrapper que extiende el Dataset base para hacerlo compatible con el DataLoader 
@@ -15,7 +12,7 @@ class BatchableHybridDataset(BaseDataset):
     en objetos 'Data' que soportan 'collate' automático (agrupamiento inteligente).
     """
     def __getitem__(self, idx):
-        # 1. Recuperamos la tupla de datos crudos del dataset padre
+        # Recuperamos la tupla de datos crudos del dataset padre
         # (x_lstm: secuencia temporal, x_gnn: features de nodos, etc.)
         raw_data = super().__getitem__(idx)
         x_lstm, x_gnn, edge_index, edge_weight, y_target, _ = raw_data
@@ -24,7 +21,7 @@ class BatchableHybridDataset(BaseDataset):
         if not isinstance(y_target, torch.Tensor):
             y_target = torch.tensor(y_target, dtype=torch.float32)
 
-        # 2. Construcción del objeto Data de PyG
+        # Construcción del objeto Data de PyG
         # Este objeto agrupa la topología del grafo y la secuencia temporal.
         # PyG se encargará de fusionar 'x', 'edge_index' y 'edge_attr' en un supergrafo
         # cuando creemos un batch. 'x_lstm' se apilará como un tensor normal.
@@ -41,9 +38,8 @@ class BatchableHybridDataset(BaseDataset):
         data.target_idx = torch.tensor([self.target_idx], dtype=torch.long)
         return data
 
-# ==============================================================================
-# 2. ARQUITECTURA DEL MODELO HÍBRIDO (LSTM + GNN)
-# ==============================================================================
+# ARQUITECTURA DEL MODELO HIBRIDO
+
 class TrueBatchHybridModel(nn.Module):
     """
     Implementación de la arquitectura híbrida LSTM-GNN.
@@ -55,7 +51,7 @@ class TrueBatchHybridModel(nn.Module):
         super().__init__()
         self.num_nodes = num_nodes # Total de activos en el universo (ej. 10)
         
-        # --- RAMA TEMPORAL (Time-Series) ---
+        # RAMA TEMPORAL 
         # Captura dependencias secuenciales (momentum, reversión a la media).
         self.lstm = nn.LSTM(
             input_size=1,             # Entrada: 1 feature (Precio normalizado)
@@ -66,7 +62,7 @@ class TrueBatchHybridModel(nn.Module):
         )
         self.lstm_drop = nn.Dropout(dropout)
 
-        # --- RAMA RELACIONAL (Graph-Based) ---
+        # RAMA RELACIONAL (Graph-Based)
         # Captura la influencia de activos correlacionados
         # Usamos GCN (Graph Convolutional Network) para propagar información entre vecinos.
         self.conv1 = GCNConv(1, gnn_hidden)       # Capa 1: Input -> Latente
@@ -74,7 +70,7 @@ class TrueBatchHybridModel(nn.Module):
         self.gnn_drop = nn.Dropout(dropout)
         self.act = nn.ReLU() # Función de activación no lineal
 
-        # --- FUSIÓN E INFERENCIA (Readout Layer) ---
+        # FUSIÓN E INFERENCIA 
         # El vector final combina lo que "recuerda" el LSTM y lo que "ve" el GNN.
         in_dim = lstm_hidden + gnn_out
         
@@ -122,10 +118,7 @@ class TrueBatchHybridModel(nn.Module):
         # En PyG, un batch de B grafos con N nodos se convierte en un solo Grafo Gigante de B*N nodos.
         # Consecuencia: Los índices de los nodos se desplazan linealmente.
         # Si cada grafo tiene 10 nodos:
-        # - El nodo objetivo del Grafo 0 está en el índice global: 0
-        # - El nodo objetivo del Grafo 1 está en el índice global: 10
-        # - El nodo objetivo del Grafo 2 está en el índice global: 20
-        #
+        # El nodo objetivo del Grafo 0 está en el índice global: 0
         
         batch_size = data.num_graphs
      

@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 from torch_geometric.data import Data
 from torch_geometric.nn import GCNConv
-from data_utils import HybridEndToEndDataset as BaseDataset
+from data_utils import HybridDataset as BaseDataset
 
 # DATASET WRAPPER 
-class BatchableHybridDataset(BaseDataset):
+class HybridDataset(BaseDataset):
     """
     Wrapper que extiende el Dataset base para hacerlo compatible con el DataLoader 
     de PyTorch Geometric. Encapsula los datos heterogéneos (Serie Temporal + Grafo) 
@@ -40,7 +40,7 @@ class BatchableHybridDataset(BaseDataset):
 
 # ARQUITECTURA DEL MODELO HIBRIDO
 
-class TrueBatchHybridModel(nn.Module):
+class HybridModel(nn.Module):
     """
     Implementación de la arquitectura híbrida LSTM-GNN.
     Procesa simultáneamente:

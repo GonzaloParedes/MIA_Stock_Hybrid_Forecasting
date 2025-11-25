@@ -15,11 +15,9 @@ from torch.utils.data import Subset
 
 from data_utils import TrainConfig
 
-from VarianteB.batch_components import BatchableHybridDataset, TrueBatchHybridModel
+from components import HybridDataset, HybridModel
 
-# ==============================================================================
-# FUNCIÓN SET_SEED (Integrada aquí para evitar dependencias externas)
-# ==============================================================================
+# FUNCIÓN SET_SEED 
 def set_seed(seed=42):
     """Fija las semillas para reproducibilidad."""
     random.seed(seed)
@@ -30,10 +28,7 @@ def set_seed(seed=42):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
 
-# ==============================================================================
-# LÓGICA DE ENTRENAMIENTO EXPANDING WINDOW
-# ==============================================================================
-
+# EXPANDING WINDOW
 def expanding_train_true_batch(
     target_ticker: str,
     tickers: list,
@@ -107,7 +102,7 @@ def expanding_train_true_batch(
 
         # Instanciación del Dataset.
         # Aquí se fusionan las series temporales (LSTM) con la estructura de grafo (GNN).
-        full_ds = BatchableHybridDataset(
+        full_ds = HybridDataset(
             prices=available_data, tickers=tickers, target_ticker=target_ticker,
             seq_len=seq_len, W=W, train_end_date=current_train_end, horizon_days=0,
             feature_mode="close_minmax", adj_mode="paper",
@@ -131,7 +126,7 @@ def expanding_train_true_batch(
 
         # INICIALIZACIÓN DEL MODELO 
         # Se reinicializa el modelo en cada paso para evitar sobreajuste a la historia lejana
-        model = TrueBatchHybridModel(
+        model = HybridModel(
             lstm_hidden=cfg.lstm_hidden, lstm_layers=cfg.lstm_layers,
             gnn_hidden=cfg.gnn_hidden, gnn_out=cfg.gnn_out,
             mlp_hidden_dims=cfg.mlp_hidden_dims, 
@@ -216,7 +211,7 @@ def expanding_train_true_batch(
         # No miramos más allá para no romper la causalidad temporal.
         test_date = next_days[0]
         # Dataset exclusivo para el punto de test
-        ds_test = BatchableHybridDataset(
+        ds_test = HybridDataset(
             prices=all_prices.loc[:test_date], tickers=tickers, target_ticker=target_ticker,
             seq_len=seq_len, W=W, 
             train_end_date=current_train_end, horizon_days=1,

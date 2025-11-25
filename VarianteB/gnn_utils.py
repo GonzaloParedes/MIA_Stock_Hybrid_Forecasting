@@ -3,7 +3,6 @@ import pandas as pd
 import torch
 from typing import List
 
-#UTILIDADES INTERNAS
 
 def dense_adj_to_edge_index(adj_matrix):
     if not isinstance(adj_matrix, torch.Tensor):

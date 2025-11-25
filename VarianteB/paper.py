@@ -12,7 +12,7 @@ import argparse
 import traceback
 
 # Importamos la NUEVA función de entrenamiento
-from VarianteB.expanding_train import expanding_train_true_batch
+from training import expanding_train_true_batch
 
 
 def inspect_dataset(df):

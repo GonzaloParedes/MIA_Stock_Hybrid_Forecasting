@@ -4,7 +4,7 @@ import torch
 from torch.utils.data import Dataset
 from dataclasses import dataclass
 from typing import List
-from VarianteB.train_gnn import build_graph_and_features
+from gnn_utils import build_graph_and_features
 
 @dataclass
 class TrainConfig:
@@ -38,7 +38,7 @@ def build_windows_from_series(series_values: np.ndarray, dates: pd.Index, seq_le
     if not X_list: return np.empty((0, seq_len, 1)), np.empty((0,)), []
     return np.stack(X_list), np.array(y_list), d_list
 
-class HybridEndToEndDataset(Dataset):
+class HybridDataset(Dataset):
     def __init__(self, prices, tickers, target_ticker, seq_len, W, 
                  train_end_date, horizon_days, feature_mode, adj_mode, 
                  price_min, price_max, cfg: TrainConfig, split="train"):

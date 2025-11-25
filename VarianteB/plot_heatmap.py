@@ -41,7 +41,7 @@ def generar_heatmap_comparativo():
     # Crear DataFrame para Seaborn
     df = pd.DataFrame([data_lstm, data_gnn], 
                       columns=tickers, 
-                      index=["LSTM (Baseline)", "Tu Modelo (LSTM+GNN)"])
+                      index=["LSTM Puro", "LSTM+GNN"])
 
     # GENERACIÓN DEL GRÁFICO
     plt.figure(figsize=(14, 4)) # Formato ancho como el de la imagen

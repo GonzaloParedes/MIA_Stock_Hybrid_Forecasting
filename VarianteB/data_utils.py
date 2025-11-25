@@ -58,7 +58,7 @@ class HybridEndToEndDataset(Dataset):
         # Serie normalizada lista para ser procesada
         series_norm_values = (series_target - p_min_val) / denom
         
-        # --- Generación de Secuencias LSTM ---
+        # Generación de Secuencias LSTM 
         # Aca se crean las ventanas de tiempo
         X_lstm_all, _, dates_lstm = build_windows_from_series(series_norm_values, prices.index, seq_len)
 
@@ -66,7 +66,7 @@ class HybridEndToEndDataset(Dataset):
         self.date_to_lstm_idx = {d: i for i, d in enumerate(pd.to_datetime(dates_lstm))}
         self.dates = prices.index
         
-        # Definición de Índices Válidos ---
+        # Definición de Índices Válidos 
         # Necesitamos tener al menos 'W' días de historia para calcular la correlación inicial.
         graph_indices = list(range(seq_len - 1, len(self.dates) - 1))
         train_idxs, test_idxs = [], []
@@ -89,7 +89,7 @@ class HybridEndToEndDataset(Dataset):
         device_cpu = torch.device("cpu") 
         
 
-        # --- Bucle Principal de Construcción de Muestras ---
+        #  Bucle Principal de Construcción de Muestras 
         for idx in target_indices:
             # Día actual (t)
             end_day = self.dates[idx]

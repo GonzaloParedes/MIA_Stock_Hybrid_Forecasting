@@ -17,7 +17,7 @@ def generar_heatmap_comparativo():
     }
 
     # MODELO
-    my_model_data = {
+    hybrid_data = {
         'AAPL':  0.01099,
         'ADBE':  0.00286,
         'AMD':   0.00155,
@@ -32,14 +32,14 @@ def generar_heatmap_comparativo():
 
     # Crear listas ordenadas
     data_lstm = [lstm_data[t] for t in tickers]
-    data_gnn  = [my_model_data[t] for t in tickers]
+    data_hybrid  = [hybrid_data[t] for t in tickers]
 
     # Calcular promedios para el título
     avg_lstm = np.mean(data_lstm)
-    avg_gnn = np.mean(data_gnn)
+    avg_hybrid = np.mean(data_hybrid)
 
     # Crear DataFrame para Seaborn
-    df = pd.DataFrame([data_lstm, data_gnn], 
+    df = pd.DataFrame([data_lstm, data_hybrid], 
                       columns=tickers, 
                       index=["LSTM Puro", "LSTM+GNN"])
 

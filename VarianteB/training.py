@@ -267,6 +267,11 @@ def expanding_train_true_batch(
         print(f"   MSE (Paper): {mse_norm:.5f}")
         print(f"   MSE ($$$)  : {mse_dollars:.2f}")
 
+        squared_errors = (preds_n - truth_n)**2
+        print(f"MSE (Media): {np.mean(squared_errors):.5f}")
+        print(f"Mediana del Error Cuadrático: {np.median(squared_errors):.5f}")
+        print(f"Peor día (Max Error): {np.max(squared_errors):.5f}")
+
         # Generación de gráfico del ticker
         plt.figure(figsize=(10,5))
         plt.plot(dates_test, truth_denorm, label='Real')

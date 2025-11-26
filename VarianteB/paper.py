@@ -122,15 +122,11 @@ def main():
             data_global = raw
     except:
         data_global = raw
-
-    # === NUEVO BLOQUE: ANÁLISIS DE DATOS ===
-    inspect_dataset(data_global)
-    # ==================================
     
     # Imputación simple de valores faltantes
     data_global = data_global.ffill().bfill()
 
-    # === CONFIGURACIÓN ===
+    # Confgi
     
     cfg = TrainConfig(
         lstm_hidden=64,     # Capacidad de memoria secuencial

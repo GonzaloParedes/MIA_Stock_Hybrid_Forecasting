@@ -29,4 +29,4 @@ Este proyecto probó dos enfoques distintos para combinar LSTM + GNN.
 - Más ruido, más overfitting.
 - Sin `hit_coef`.
 
-La Variante A es la definitiva: simple, estable y con mejores resultados.
+La Variante A es la utilizada: simple, estable y con mejores resultados.
